@@ -1,3 +1,11 @@
+![GitHub release](https://img.shields.io/github/v/release/KenshiN28rus/comfyui-rocm-gfx1010)
+![GitHub stars](https://img.shields.io/github/stars/KenshiN28rus/comfyui-rocm-gfx1010)
+![GitHub forks](https://img.shields.io/github/forks/KenshiN28rus/comfyui-rocm-gfx1010)
+![License](https://img.shields.io/github/license/KenshiN28rus/comfyui-rocm-gfx1010)
+![GitHub issues](https://img.shields.io/github/issues/KenshiN28rus/comfyui-rocm-gfx1010)
+
+# ComfyUI на AMD RX 5700 XT (gfx1010) с ROCm 6.2
+...
 # ComfyUI на AMD RX 5700 XT (gfx1010) с ROCm 6.2
 
 Docker-образ с **PyTorch 2.8**, собранным специально для **AMD RDNA1 (gfx1010)** — архитектуры, которую AMD официально не поддерживает в современных версиях ROCm.
