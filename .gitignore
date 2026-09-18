@@ -13,3 +13,9 @@ __pycache__/
 .DS_Store
 venv/
 .venv/
+
+# Release files (в GitHub Releases, не в репозитории)
+release-files/
+wheels/*.whl
+wheels/*.egg
+wheels/*.tar.gz
