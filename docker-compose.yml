@@ -1,0 +1,23 @@
+services:
+  comfyui:
+    build: .
+    container_name: comfyui-gfx1010
+    devices:
+      - /dev/kfd
+      - /dev/dri/card1
+      - /dev/dri/renderD128
+    group_add:
+      - "44"
+      - "992"
+    environment:
+      - HSA_OVERRIDE_GFX_VERSION=10.3.0
+      - PYTORCH_ROCM_ARCH=gfx1010
+      - HIP_VISIBLE_DEVICES=0
+      - GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
+    ports:
+      - "8188:8188"
+    volumes:
+      - ./models:/opt/ComfyUI/models
+      - ./output:/opt/ComfyUI/output
+      - ./input:/opt/ComfyUI/input
+    restart: unless-stopped

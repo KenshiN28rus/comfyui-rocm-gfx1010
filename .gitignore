@@ -1,0 +1,15 @@
+models/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.gguf
+output/
+input/
+__pycache__/
+*.pyc
+.cache/
+*.log
+.DS_Store
+venv/
+.venv/
