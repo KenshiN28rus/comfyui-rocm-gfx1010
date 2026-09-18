@@ -54,3 +54,12 @@ sudo apt install ./amdgpu-install_6.4.60402-1_all.deb
 sudo amdgpu-install --usecase=rocm --no-dkms
 sudo usermod -a -G render,video $USER
 sudo reboot
+
+## 🙏 Благодарности
+
+- **[Efenstor](https://github.com/Efenstor)** — за его проекты по поддержке gfx1010:
+  - [PyTorch-ROCm-gfx1010](https://github.com/Efenstor/PyTorch-ROCm-gfx1010) — оригинальный гайд
+  - [PyTorch-ROCm-gfx1010-Debian13](https://github.com/Efenstor/PyTorch-ROCm-gfx1010-Debian13) — обновлённая версия (наработки применимы к Ubuntu 24.04)
+  - Его **rocBLAS-библиотеки для gfx1010** и **патчи для composable_kernel** легли в основу этого Docker-образа. Без них сборка PyTorch 2.8 была бы невозможна.
+- [ComfyUI](https://github.com/comfyanonymous/ComfyUI) — гениальный интерфейс
+- [ComfyUI-Manager](https://github.com/Comfy-Org/ComfyUI-Manager) — управление узлами
