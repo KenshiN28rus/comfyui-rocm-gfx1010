@@ -1,0 +1,44 @@
+# Альтернативный Dockerfile: использует готовые wheel-файлы из Releases.
+# Скачай wheel-файлы из https://github.com/KenshiN28rus/comfyui-rocm-gfx1010/releases
+# и положи их в папку ./wheels/ перед сборкой.
+
+FROM rocm/dev-ubuntu-22.04:6.2-complete
+
+RUN apt update && apt install -y \
+    git python3-dev python3-venv python3-pip \
+    wget curl libopenblas0 liblapack3 \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN cd /tmp && \
+    wget https://github.com/Efenstor/PyTorch-ROCm-gfx1010-Debian13/raw/refs/heads/main/files/rocblas_library_gfx1010.tar.gz && \
+    mkdir -p /opt/rocm/lib/rocblas/library && \
+    tar xvzf rocblas_library_gfx1010.tar.gz -C /opt/rocm/lib/rocblas/library
+
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --upgrade pip wheel setuptools
+
+COPY wheels/ /tmp/wheels/
+
+RUN pip install --no-deps /tmp/wheels/torch-2.8.0a0+gitba56102-cp310-cp310-linux_x86_64.whl && \
+    pip install --no-deps /tmp/wheels/torchvision-0.23.0a0+824e8c8-cp310-cp310-linux_x86_64.whl && \
+    cd /tmp/wheels && \
+    tar xzf torchaudio-2.8.0a0+6e1c7fe-py3.10-linux-x86_64.egg.tar.gz && \
+    pip install /tmp/wheels/torchaudio-2.8.0a0+6e1c7fe-py3.10-linux-x86_64.egg
+
+WORKDIR /opt
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git
+
+WORKDIR /opt/ComfyUI
+RUN sed -i -E 's/^(torch|torchvision|torchaudio)/#\1/' requirements.txt && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir --no-deps torchsde trampoline
+
+RUN cd custom_nodes && \
+    git clone https://github.com/Comfy-Org/ComfyUI-Manager.git comfyui-manager
+
+RUN mkdir -p /opt/ComfyUI/user/__manager && \
+    printf '[default]\ngit_exe = /usr/bin/git\ndowngrade_blacklist = torch, torchvision, torchaudio, numpy\nallow_pip_install = false\n' > /opt/ComfyUI/user/__manager/config.ini
+
+EXPOSE 8188
+CMD ["python3", "main.py", "--listen", "0.0.0.0", "--force-fp32", "--lowvram", "--enable-manager"]
